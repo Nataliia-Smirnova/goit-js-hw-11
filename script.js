@@ -30,14 +30,18 @@ startBtnRef.addEventListener("click", onStartBtnClick);
 stopBtnRef.addEventListener("click", onStopBtnClick);
 
 // Функции
-function bodyColorSet(color) {
-  color
-    ? (bodyRef.style.backgroundColor = color)
-    : (bodyRef.style.backgroundColor = null);
+function bodyColorSet(color = "#fff") {
+  bodyRef.style.backgroundColor = color;
+}
+
+function changeStartBtnStatus() {
+  startBtnRef.hasAttribute("disabled")
+    ? startBtnRef.removeAttribute("disabled")
+    : startBtnRef.setAttribute("disabled", true);
 }
 
 function onStartBtnClick() {
-  startBtnRef.setAttribute("disabled", true);
+  changeStartBtnStatus();
   intervalId = setInterval(() => {
     bodyColorSet(colors[randomIntegerFromInterval(0, colors.length - 1)]);
   }, 1000);
@@ -45,8 +49,7 @@ function onStartBtnClick() {
 
 function onStopBtnClick() {
   clearInterval(intervalId);
-  intervalId = null;
-  startBtnRef.removeAttribute("disabled");
+  changeStartBtnStatus();
   bodyColorSet();
 }
 //
@@ -62,11 +65,12 @@ const refs = {
   secsRef: document.querySelector("[data-value=secs]"),
 };
 
+let targetDate = new Date("Oct 17, 2020");
+
 // Функции
 
 const timer = setInterval(() => {
   let currentDate = Date.now();
-  let targetDate = new Date("Oct 17, 2020");
   let delta = targetDate.getTime() - currentDate;
   updateTimerValue(delta);
 }, 1000);
